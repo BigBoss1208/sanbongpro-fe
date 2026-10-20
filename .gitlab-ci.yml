@@ -1,0 +1,13 @@
+# Personal repo: validation only. Cloudflare integration is connected later.
+stages: [verify]
+verify:
+  image: node:22-alpine
+  stage: verify
+  script:
+    - npm ci
+    - npm run lint
+    - npm test
+    - npm run build
+  artifacts:
+    paths: [dist/]
+    expire_in: 1 day

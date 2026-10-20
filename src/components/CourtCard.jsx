@@ -1,0 +1,9 @@
+import { useState } from "react";
+import PropTypes from "prop-types";
+import { fieldImageUrl } from "../utils/fieldImage";
+export default function CourtCard({ court, saved = false, busy = false, onFavorite, onNavigate }) {
+ const [failed, setFailed] = useState(false);
+ const hasPrice = court.giaThapNhat != null && Number.isFinite(Number(court.giaThapNhat));
+ return <article className="court-card"><div className="court-card-image">{court.hinhAnh && !failed ? <img src={fieldImageUrl(court.hinhAnh)} alt={court.tenSan} loading="lazy" decoding="async" onError={() => setFailed(true)} /> : <div className="court-photo-empty"><span aria-hidden="true">▥</span><small>Ảnh sân đang được cập nhật</small></div>}<button type="button" className={`court-heart ${saved ? "saved" : ""}`} onClick={onFavorite} disabled={busy} aria-pressed={saved} aria-label={`${saved ? "Bỏ yêu thích" : "Yêu thích"} ${court.tenSan}`}>{busy ? "…" : saved ? "♥" : "♡"}</button>{court.trangThai === "HOAT_DONG" && <span className="court-status"><i />Đang hoạt động</span>}{court.trangThai === "TAM_NGUNG" && <span className="court-status inactive">Tạm ngưng</span>}</div><div className="court-card-body"><h3>{court.tenSan}</h3><p className="court-location"><span aria-hidden="true">⌖</span>{court.tenCumSan || "Chưa cập nhật cụm sân"}</p><div className="court-meta"><span>⚽ {court.loaiSan || "Chưa cập nhật loại sân"}</span></div><div className="court-card-bottom"><div>{hasPrice ? <><small>Giá từ</small><strong>{Number(court.giaThapNhat).toLocaleString("vi-VN")}<small>đ / giờ</small></strong></> : <small>Chưa cấu hình giá</small>}</div><button className="club-button" type="button" onClick={() => onNavigate(`field-${court.id}`)}>Xem chi tiết <span aria-hidden="true">→</span></button></div></div></article>;
+}
+CourtCard.propTypes = { court: PropTypes.object.isRequired, saved: PropTypes.bool, busy: PropTypes.bool, onFavorite: PropTypes.func.isRequired, onNavigate: PropTypes.func.isRequired };

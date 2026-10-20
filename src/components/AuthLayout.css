@@ -1,0 +1,156 @@
+/* Scoped to authentication: no changes to public pages or operational forms. */
+.club-auth.club-auth-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: 24px 16px;
+  background: #0b0f14 url('/assets/auth-stadium.png') center center / cover no-repeat;
+}
+.club-auth-centered::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, #05090e18 30%, #05090e66);
+}
+.club-auth-centered .club-auth-panel {
+  position: relative;
+  width: min(500px, 100%);
+  min-width: 0;
+  min-height: 0;
+  padding: 40px 40px 26px;
+  border: 1px solid #e6e8ec;
+  border-radius: 9px;
+  background: #fff;
+  box-shadow: 0 18px 65px #0006;
+}
+.club-auth-centered .club-auth-form { width: 100%; max-width: none; }
+.club-auth-centered .club-auth-form > .club-brand {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 0 0 44px;
+  text-align: left;
+}
+.club-auth-centered .club-brand-mark { width: 46px; height: 46px; }
+.club-auth-centered .club-brand strong { font-size: 20px; letter-spacing: -.045em; }
+.club-auth-centered .club-auth-brand-accent { color: #ed0b2d; }
+.club-auth-centered .club-brand small { font-size: 8px; color: #64748b; }
+.club-auth-centered .club-auth-form h1 {
+  margin: 0 0 12px;
+  color: #080b0f;
+  text-align: center;
+  font-size: 36px;
+  font-weight: 900;
+  letter-spacing: -.045em;
+  line-height: 1.15;
+}
+.club-auth-centered .club-auth-subtitle {
+  max-width: 295px;
+  margin: 0 auto 30px;
+  color: #667085;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.club-auth-centered .club-auth-fields { gap: 14px; }
+.club-auth-centered .club-form-label { font-size: 12px; font-weight: 600; color: #596579; }
+.club-auth-centered .club-form-label > input,
+.club-auth-centered .club-password input {
+  min-height: 48px;
+  margin-top: 6px;
+  border: 1px solid #dce2e9;
+  border-radius: 8px;
+  background: #f8f9fb;
+  font-size: 14px;
+}
+.club-auth-centered input::placeholder { color: #8793a5; }
+.club-auth-centered input:focus-visible {
+  border-color: var(--primary);
+  outline: 2px solid #da1a3230;
+  outline-offset: 2px;
+}
+.club-auth-centered .club-password button { height: 48px; display: grid; place-items: center; }
+.club-auth-centered .club-checkbox { font-size: 12px; }
+.club-auth-centered .club-checkbox input { width: 17px; height: 17px; }
+.club-auth-centered .club-auth-options { gap: 12px; margin: 0 0 2px; }
+.club-auth-centered .club-auth-options > a { font-size: 12px; white-space: nowrap; }
+.club-auth-centered .club-auth-fields > .club-button {
+  min-height: 48px;
+  border-radius: 8px;
+  background: #ed0b2d;
+  font-size: 14px;
+  font-weight: 750;
+}
+.club-auth-centered .club-auth-fields > .club-button:hover { background: #c90b27; }
+.club-auth-centered .club-auth-fields > .club-button:disabled { cursor: wait; opacity: .6; }
+.club-auth-centered .club-auth-switch {
+  position: relative;
+  margin: 30px 0 0;
+  padding-top: 26px;
+  font-size: 12px;
+}
+.club-auth-centered .club-auth-switch::before {
+  content: 'hoặc';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0 14px;
+  background: white;
+  color: #667085;
+}
+.club-auth-centered .club-auth-back {
+  display: block;
+  width: fit-content;
+  margin: 22px auto 0;
+  color: #758195;
+  font-size: 11px;
+}
+.club-auth-register .club-auth-panel { padding-top: 28px; padding-bottom: 22px; }
+.club-auth-register .club-auth-form > .club-brand { margin-bottom: 24px; }
+.club-auth-register .club-auth-subtitle { margin-bottom: 22px; }
+.club-auth-register .club-auth-fields { gap: 10px; }
+.club-auth-register .club-form-label > input,
+.club-auth-register .club-password input { min-height: 44px; margin-top: 4px; }
+.club-auth-register .club-password button { height: 44px; }
+.club-auth-register .club-auth-switch { margin-top: 24px; padding-top: 22px; }
+.club-auth-register .club-auth-back { margin-top: 16px; }
+.club-auth-centered .club-alert { margin-bottom: 18px; overflow-wrap: anywhere; }
+.club-auth-stadium-copy {
+  position: absolute;
+  bottom: 14%;
+  color: #f6f7f8;
+  font-size: clamp(30px, 3.5vw, 56px);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -.045em;
+  text-shadow: 0 3px 14px #0009;
+  pointer-events: none;
+}
+.club-auth-stadium-copy-left { left: 4.5%; }
+.club-auth-stadium-copy-right { right: 4.5%; }
+@media (max-width: 900px) {
+  .club-auth-stadium-copy { display: none; }
+  .club-auth-centered .club-auth-panel { padding: 32px 32px 24px; }
+  .club-auth-centered .club-auth-form > .club-brand { margin-bottom: 32px; }
+}
+@media (max-width: 520px) {
+  .club-auth.club-auth-centered { padding: 20px 12px; background-position: 50% center; }
+  .club-auth-centered .club-auth-panel { padding: 28px 22px 22px; }
+  .club-auth-centered .club-auth-form > .club-brand { margin-bottom: 28px; }
+  .club-auth-centered .club-brand strong { font-size: 18px; }
+  .club-auth-centered .club-auth-form h1 { font-size: 30px; }
+  .club-auth-centered .club-auth-subtitle { font-size: 13px; margin-bottom: 24px; }
+  .club-auth-centered .club-auth-fields { gap: 12px; }
+  .club-auth-centered .club-form-label > input,
+  .club-auth-centered .club-password input { font-size: 16px; }
+  .club-auth-centered .club-form-row { gap: 10px; }
+  .club-auth-centered .club-auth-options { gap: 8px; }
+  .club-auth-centered .club-checkbox,
+  .club-auth-centered .club-auth-options > a { font-size: 11px; }
+}
