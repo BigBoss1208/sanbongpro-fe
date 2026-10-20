@@ -9,8 +9,8 @@ const store = new Map();
 global.localStorage = {getItem:key=>store.get(key) ?? null,setItem:(key,value)=>store.set(key,value),removeItem:key=>store.delete(key)};
 global.sessionStorage = { getItem: () => null, setItem() {}, removeItem() {} };
 global.window = {location:{pathname:'/',protocol:'http:'},addEventListener(){},removeEventListener(){},dispatchEvent(){}};
-function component(file, exportName = "default") {
- const output=buildSync({entryPoints:[path.join(__dirname,'..',file)],bundle:true,write:false,format:'cjs',platform:'node',jsx:'automatic',loader:{'.css':'empty'},external:['react','react/jsx-runtime','prop-types'],define:{'import.meta.env':'{}'}});
+function component(file, exportName = "default", env = {}) {
+ const output=buildSync({entryPoints:[path.join(__dirname,'..',file)],bundle:true,write:false,format:'cjs',platform:'node',jsx:'automatic',loader:{'.css':'empty'},external:['react','react/jsx-runtime','prop-types'],define:{'import.meta.env':JSON.stringify(env)}});
  const module={exports:{}};
  new Function('require','module','exports',output.outputFiles[0].text)(require,module,module.exports);
  return module.exports[exportName];
@@ -83,11 +83,16 @@ test('price form permits normal whole-VND prices without offset step mismatch',(
 });
 
 test('field images normalize keys and owned URLs without duplicate bucket',()=>{
- const image=component('src/utils/fieldImage.js','fieldImageUrl');
- assert.equal(image('san/pitch.png'),'http://103.167.88.223:9000/nhom2/san/pitch.png');
- assert.equal(image('nhom2/san/pitch.png'),image('san/pitch.png'));
- assert.equal(image('http://103.167.88.223:9000/nhom2/san/pitch.png?expired=1'),image('san/pitch.png'));
+ const image=component('src/utils/fieldImage.js','fieldImageUrl',{VITE_MINIO_PUBLIC_URL:'https://personal-storage.example.invalid/pitches'});
+ assert.equal(image('san/pitch.png'),'https://personal-storage.example.invalid/pitches/san/pitch.png');
+ assert.equal(image('pitches/san/pitch.png'),image('san/pitch.png'));
+ assert.equal(image('https://personal-storage.example.invalid/pitches/san/pitch.png?expired=1'),image('san/pitch.png'));
  for(const invalid of ['',null,'../private','san/%invalid','https://foreign.invalid/pitch.png']) assert.equal(image(invalid),'/assets/court-placeholder.svg');
+});
+test('field images never fall back to storage when personal storage is not configured',()=>{
+ const image=component('src/utils/fieldImage.js','fieldImageUrl');
+ assert.equal(image('san/pitch.png'),'/assets/court-placeholder.svg');
+ assert.equal(image('https://foreign.invalid/pitch.png'),'/assets/court-placeholder.svg');
 });
 test('payment result route ignores browser success flags and works on reload without session',()=>{
  store.clear(); window.location.pathname='/ket-qua-thanh-toan'; window.location.search='?ref=example&vnp_ResponseCode=00';
