@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { sanApi } from "../api/sanApi";
 import { answerPitchQuestion } from "../utils/pitchAssistant";
 import "./PitchChatbot.css";
+import ChatFootballLogo from "./ChatFootballLogo";
 
 const greeting = { role: "assistant", text: "Chào bạn! Mình là trợ lý Sân Bóng Pro ⚽. Bạn muốn tìm sân, xem giá hay cần hướng dẫn đặt sân? Mình tư vấn tự động từ dữ liệu website, không tự đặt hoặc thanh toán." };
 const suggestions = ["Sân hot", "Giá sân", "Sân 5 dưới 400k", "Cách đặt sân"];
@@ -41,7 +42,7 @@ export default function PitchChatbot() {
   return <aside className="pitch-chat" aria-label="Trợ lý tư vấn sân bóng">
     {open && <section id="pitch-chat-panel" className="pitch-chat-panel" role="region" aria-labelledby="pitch-chat-title"
       onKeyDown={event => { if (event.key === "Escape") close(); }}>
-      <header className="pitch-chat-header"><div><h2 id="pitch-chat-title">⚽ Trợ lý Sân Bóng Pro</h2><p>Tư vấn sân & giá từ hệ thống</p></div>
+      <header className="pitch-chat-header"><div><h2 id="pitch-chat-title"><ChatFootballLogo /> Trợ lý Sân Bóng Pro</h2><p>Tư vấn sân & giá từ hệ thống</p></div>
         <button type="button" onClick={close} aria-label="Đóng chatbot">✕</button></header>
       <div ref={history} className="pitch-chat-history" role="log" aria-live="polite" aria-relevant="additions text">
         {messages.map((message, index) => <div key={index} className={`pitch-chat-message ${message.role}`}>
@@ -63,7 +64,7 @@ export default function PitchChatbot() {
     </section>}
     <button ref={toggle} className="pitch-chat-ball" type="button" onClick={() => open ? close() : setOpen(true)}
       aria-label={open ? "Đóng trợ lý sân bóng" : "Mở trợ lý sân bóng"} aria-expanded={open} aria-controls="pitch-chat-panel">
-      <span aria-hidden="true">⚽</span><span className="pitch-chat-badge" aria-hidden="true">Chat</span>
+      <ChatFootballLogo />
     </button>
   </aside>;
 }

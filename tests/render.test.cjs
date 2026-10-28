@@ -25,7 +25,7 @@ test('football chatbot starts collapsed with an accessible global toggle', () =>
  const html = render(component('src/components/PitchChatbot.jsx'));
  assert.match(html, /Mở trợ lý sân bóng/);
  assert.match(html, /aria-expanded="false"/);
- assert.match(html, /⚽/);
+ assert.match(html, /<svg/);
  assert.doesNotMatch(html, /pitch-chat-history/);
 });
 test('public navigation replaces old booking pill on every customer page and retains favorites',()=>{
