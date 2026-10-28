@@ -21,6 +21,13 @@ const App=component('src/App.jsx');
 const Home=component('src/pages/PremiumHomePage.jsx');
 const render=(C,props={})=>renderToStaticMarkup(React.createElement(C,{onNavigate(){},onLogout(){},children:'CONTENT',...props}));
 const bookingButton=html=>/<button\b[^>]*>Đặt sân<\/button>/.test(html);
+test('football chatbot starts collapsed with an accessible global toggle', () => {
+ const html = render(component('src/components/PitchChatbot.jsx'));
+ assert.match(html, /Mở trợ lý sân bóng/);
+ assert.match(html, /aria-expanded="false"/);
+ assert.match(html, /⚽/);
+ assert.doesNotMatch(html, /pitch-chat-history/);
+});
 test('public navigation replaces old booking pill on every customer page and retains favorites',()=>{
  const pages=['home','search','featured','field-detail','favorites','history','profile'];
  for(const page of pages){

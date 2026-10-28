@@ -1,0 +1,17 @@
+.pitch-chat{position:fixed;right:max(18px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:60;font-family:inherit}
+.pitch-chat-ball{position:relative;display:grid;place-items:center;width:64px;height:64px;margin-left:auto;border:3px solid #fff;border-radius:50%;background:#da1a32;box-shadow:0 7px 26px #0b0f1440;cursor:pointer}
+.pitch-chat-ball>span:first-child{font-size:43px;line-height:1;filter:drop-shadow(0 2px 2px #0003)}
+.pitch-chat-badge{position:absolute;bottom:-5px;right:-3px;border:2px solid white;border-radius:12px;padding:1px 7px;background:#0b0f14;color:#fff;font-size:10px;font-weight:800}
+.pitch-chat-panel{width:min(390px,calc(100vw - 36px));height:min(590px,calc(100dvh - 112px));display:flex;flex-direction:column;margin-bottom:14px;overflow:hidden;background:white;color:#0b0f14;border:1px solid #e5e7eb;border-radius:20px;box-shadow:0 16px 60px #0b0f1433}
+.pitch-chat-header{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:16px;background:#0b0f14;color:#fff;border-top:4px solid #da1a32}
+.pitch-chat-header h2{margin:0;font-size:16px;font-weight:800}.pitch-chat-header p{margin:4px 0 0;font-size:12px;color:#cbd5e1}
+.pitch-chat-header button{background:transparent;color:white;border:0;padding:9px;cursor:pointer;font-size:18px}
+.pitch-chat-history{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:14px;display:flex;flex-direction:column;gap:12px;background:#f7f8fa}
+.pitch-chat-message{max-width:96%;padding:11px 13px;border-radius:14px;background:white;border:1px solid #e5e7eb;font-size:13px;line-height:1.6;overflow-wrap:anywhere;flex-shrink:0}
+.pitch-chat-message.user{align-self:flex-end;background:#fff0f2;border-color:#f8c7d0}.pitch-chat-speaker{font-size:10px;text-transform:uppercase;font-weight:800;color:#64748b}.pitch-chat-message p{margin:3px 0 0;white-space:pre-line}
+.pitch-chat-card{display:flex;flex-direction:column;gap:3px;margin-top:10px;padding:10px;border-radius:10px;border:1px solid #eee;text-decoration:none;color:#0b0f14;background:#fff}
+.pitch-chat-card span{font-size:11px;color:#64748b}.pitch-chat-card b,.pitch-chat-link{color:#c4102c}.pitch-chat-link{display:inline-block;margin:8px 12px 0 0;font-weight:700;text-decoration:underline;font-size:12px}
+.pitch-chat-suggestions{display:flex;gap:6px;flex-wrap:wrap;padding:10px 12px 4px}.pitch-chat-suggestions button{border:1px solid #f3c0c9;border-radius:16px;background:#fff5f6;color:#9f1239;padding:6px 9px;font-size:11px;cursor:pointer}
+.pitch-chat-form{display:flex;gap:8px;padding:9px 12px 3px}.pitch-chat-form input{min-width:0;flex:1;border:1px solid #d1d5db;border-radius:10px;padding:10px;font-size:14px;color:#0b0f14;background:#fff}.pitch-chat-form button{border:0;border-radius:10px;background:#da1a32;color:#fff;padding:8px 14px;cursor:pointer}
+.pitch-chat button:disabled{opacity:.5;cursor:wait}.pitch-chat button:focus-visible,.pitch-chat a:focus-visible,.pitch-chat input:focus-visible{outline:3px solid #fb7185;outline-offset:2px}.pitch-chat-note{margin:6px 12px 10px;font-size:10px;color:#64748b}.pitch-chat-loading{font-size:12px;color:#64748b}
+@media(max-height:500px){.pitch-chat-panel{height:calc(100dvh - 95px);margin-bottom:8px}.pitch-chat-ball{width:50px;height:50px}.pitch-chat-ball>span:first-child{font-size:34px}}
