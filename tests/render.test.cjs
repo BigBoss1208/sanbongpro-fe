@@ -87,12 +87,12 @@ test('field images normalize keys and owned URLs without duplicate bucket',()=>{
  assert.equal(image('san/pitch.png'),'https://personal-storage.example.invalid/pitches/san/pitch.png');
  assert.equal(image('pitches/san/pitch.png'),image('san/pitch.png'));
  assert.equal(image('https://personal-storage.example.invalid/pitches/san/pitch.png?expired=1'),image('san/pitch.png'));
- for(const invalid of ['',null,'../private','san/%invalid','https://foreign.invalid/pitch.png']) assert.equal(image(invalid),'/assets/court-placeholder.svg');
+ for(const invalid of ['',null,'../private','san/%invalid','http://foreign.invalid/pitch.png']) assert.equal(image(invalid),'/assets/court-placeholder.svg');
 });
 test('field images never fall back to storage when personal storage is not configured',()=>{
  const image=component('src/utils/fieldImage.js','fieldImageUrl');
  assert.equal(image('san/pitch.png'),'/assets/court-placeholder.svg');
- assert.equal(image('https://foreign.invalid/pitch.png'),'/assets/court-placeholder.svg');
+ assert.equal(image('https://external.example.com/pitch.png'),'https://external.example.com/pitch.png');
 });
 test('payment result route ignores browser success flags and works on reload without session',()=>{
  store.clear(); window.location.pathname='/ket-qua-thanh-toan'; window.location.search='?ref=example&vnp_ResponseCode=00';

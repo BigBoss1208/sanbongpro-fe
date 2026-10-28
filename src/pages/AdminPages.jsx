@@ -1,4 +1,5 @@
 import { fieldImageUrl } from "../utils/fieldImage";
+import { loadImageUrl } from "../utils/imageUrl";
 import DialogShell from "../components/DialogShell";
 import { RevenueLineChart, FieldTypeChart } from "../components/DashboardCharts";
 import { useExclusiveAction } from "../utils/useExclusiveAction";
@@ -98,6 +99,7 @@ export function AdminQuanLySanPage() {
   const [showModal, setShowModal] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [imagePreview, setImagePreview] = useState("");
+  const [imageUrlDraft, setImageUrlDraft] = useState("");
   const [editingItem, setEditingItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -153,6 +155,7 @@ export function AdminQuanLySanPage() {
       const imageUrl = res?.url || res?.data?.url || "";
       const objectKey = res?.objectKey || res?.data?.objectKey;
       if (!objectKey) throw new Error("API chưa trả object key ảnh.");
+      setImageUrlDraft("");
       setImagePreview(imageUrl);
       setFormData((prev) => ({ ...prev, hinhAnh: objectKey }));
     } catch (err) {
@@ -163,6 +166,7 @@ export function AdminQuanLySanPage() {
   });
 
   const openAddModal = () => {
+    setImageUrlDraft("");
     setEditingItem(null);
     setImagePreview("");
     setFormData({
@@ -178,6 +182,7 @@ export function AdminQuanLySanPage() {
   };
 
   const openEditModal = (field) => {
+    setImageUrlDraft("");
     setEditingItem(field);
     setImagePreview("");
     if (field.hinhAnh) setImagePreview(fieldImageUrl(field.hinhAnh));
@@ -193,8 +198,21 @@ export function AdminQuanLySanPage() {
     setShowModal(true);
   };
 
+  const applyImageUrl = useExclusiveAction(async () => {
+    setUploading(true);
+    setFormError("");
+    try {
+      const url = await loadImageUrl(imageUrlDraft);
+      setImagePreview(url);
+      setFormData((prev) => ({ ...prev, hinhAnh: url }));
+      setImageUrlDraft("");
+    } catch (err) { setFormError(err.message); }
+    finally { setUploading(false); }
+  });
+
   const handleSave = useExclusiveAction(async () => {
     if (saving || uploading) return;
+    if (imageUrlDraft.trim()) { setFormError("Bấm Dùng URL ảnh để kiểm tra ảnh trước khi lưu."); return; }
     if (!formData.tenSan.trim()) {
       setFormError("Vui lòng nhập tên sân.");
       return;
@@ -476,6 +494,17 @@ export function AdminQuanLySanPage() {
               </div>
 
               <div className="md:col-span-2">
+                <label htmlFor="pitch-image-url" className="mb-1.5 block text-sm font-semibold text-slate-700">URL ảnh HTTPS</label>
+                <div className="mb-3 flex flex-col gap-2 sm:flex-row">
+                  <input id="pitch-image-url" type="url" maxLength={255} value={imageUrlDraft}
+                    disabled={uploading || saving} onChange={(e) => setImageUrlDraft(e.target.value)}
+                    placeholder="https://example.com/san-bong.jpg"
+                    className="min-w-0 flex-1 rounded-xl border border-slate-200 px-3 py-2.5 text-sm" />
+                  <button type="button" onClick={applyImageUrl} disabled={uploading || saving || !imageUrlDraft.trim()}
+                    className="rounded-xl bg-[#DA1A32] px-4 py-2.5 text-sm font-bold text-white disabled:opacity-50">
+                    {uploading ? "Đang kiểm tra…" : "Dùng URL ảnh"}
+                  </button>
+                </div>
                 <ImageUploadField
                   label="Ảnh sân"
                   value={imagePreview}

@@ -1,5 +1,11 @@
+import { validateImageUrl } from "./imageUrl";
+
 export function fieldImageUrl(reference) {
   if (typeof reference !== "string" || !reference.trim()) return "/assets/court-placeholder.svg";
+  if (/^https:\/\//i.test(reference.trim())) {
+    try { return validateImageUrl(reference); }
+    catch { /* Legacy owned URLs below can be normalized to a public object URL. */ }
+  }
   const base = (import.meta.env?.VITE_MINIO_PUBLIC_URL || "").trim().replace(/\/+$/, "");
   // No fallback to storage owned by another project/account.
   if (!base) return "/assets/court-placeholder.svg";
