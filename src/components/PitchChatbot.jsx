@@ -16,6 +16,7 @@ export default function PitchChatbot() {
   const input = useRef(null);
   const history = useRef(null);
   const toggle = useRef(null);
+  const conversationContext = useRef({});
   useEffect(() => { if (open) input.current?.focus(); }, [open]);
   useEffect(() => { if (open && history.current) history.current.scrollTop = history.current.scrollHeight; }, [messages, busy, open]);
 
@@ -27,12 +28,13 @@ export default function PitchChatbot() {
     setMessages(previous => [...previous.slice(-29), { role: "user", text: question }]);
     try {
       let response;
-      try { response = answerPitchQuestion(question, null); }
+      try { response = answerPitchQuestion(question, null, conversationContext.current); }
       catch {
         // Fetch only public inventory, only when needed. Never send the conversation to a provider.
         const fields = await sanApi.danhSachSan();
-        response = answerPitchQuestion(question, fields);
+        response = answerPitchQuestion(question, fields, conversationContext.current);
       }
+      if (response.context) conversationContext.current = response.context;
       setMessages(previous => [...previous, { role: "assistant", ...response }]);
     } catch {
       setMessages(previous => [...previous, { role: "assistant", text: "Chưa lấy được dữ liệu sân. Backend Free có thể đang khởi động; đợi một lát rồi hỏi lại nhé. Mình chưa có dữ liệu để báo giá lúc này.", links: [{ href: "/tim-san", label: "Mở danh sách sân" }] }]);

@@ -30,7 +30,26 @@ test('never invents popularity, availability or missing prices', () => {
 test('FAQ works without backend and does not perform actions', () => {
   assert.equal(answer('cách đặt sân', null).links[0].href, '/tim-san');
   assert.equal(answer('lịch sử đặt sân', null).links[0].href, '/lich-su-dat-san');
-  assert.match(answer('thanh toán VNPay', null).text, /chưa được bật/);
+  assert.match(answer('thanh toán VNPay', null).text, /Sandbox/);
   assert.match(answer('mật khẩu', null).text, /Không gửi mật khẩu/);
-  assert.match(answer('xin chào', null).text, /Mình hỗ trợ/);
+  assert.match(answer('xin chào', null).text, /Chào bạn/);
+});
+
+ test('follow-up preserves type and supports resetting filters', () => {
+   const first=answer('đội 7 người dưới 400k',fields);
+   assert.deepEqual(first.fields.map(x=>x.id),[2]);
+   const next=answer('còn dưới 100k',fields,first.context);
+   assert.match(next.text,/Chưa có sân/);
+   assert.deepEqual(answer('tất cả sân',fields,next.context).fields.map(x=>x.id),[2,1,3]);
+ });
+ test('expanded advice covers common customer questions without inventing policies',()=>{
+   for(const question of ['quên mật khẩu','đổi lịch','bị trừ tiền','check in','mang gì','bãi gửi xe','địa chỉ ở đâu','sân yêu thích','bảo mật','voucher sinh viên','mưa lớn','chọn loại sân']) {
+     const response=answer(question,null);
+     assert.ok(response.text.length>60,question);
+     assert.equal(response.fields,undefined,question);
+   }
+ });
+
+test('price questions are not mistaken for weather', () => {
+  assert.equal(answer('giá sân bao nhiêu', fields).fields[0].price, 200000);
 });
